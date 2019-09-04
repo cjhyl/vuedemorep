@@ -8,6 +8,7 @@ import axios from 'axios'
 import vueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './css/main.css'
 
 //阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false;
