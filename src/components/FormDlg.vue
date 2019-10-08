@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import mmUtils from '../utils'
+
 export default {
     props: ['title', 'datamap'],
     data: function () {

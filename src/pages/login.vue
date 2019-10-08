@@ -97,19 +97,25 @@ export default {
 			var that=this;
 			
 			this.loading=true;
-			that.$root.login({
-				userName:that.account,
-				password:that.pwd,
-				cb:function(rl){
-					that.loading=false;
-					if(rl&&rl.state=='logined'){
-						that.$message('登录成功');
-						that.$router.push({
-							name: 'default',
-						});
-					}
-				}
-			});
+			setTimeout(() => {
+				this.$message('登录成功');
+				this.$router.push({
+					name: 'default',
+				});
+			}, 1500);
+			// that.$root.login({
+			// 	userName:that.account,
+			// 	password:that.pwd,
+			// 	cb:function(rl){
+			// 		that.loading=false;
+			// 		if(rl&&rl.state=='logined'){
+			// 			that.$message('登录成功');
+			// 			that.$router.push({
+			// 				name: 'default',
+			// 			});
+			// 		}
+			// 	}
+			// });
 		},
 		
 	}

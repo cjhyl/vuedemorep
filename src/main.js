@@ -7,8 +7,10 @@ import store from './vuex'
 import axios from 'axios'
 import vueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
 import './css/main.css'
+import 'element-ui/lib/theme-chalk/index.css'
+import mmUtils from './utils'
+
 
 //阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false;
@@ -52,7 +54,8 @@ new Vue({
 			});
 		});
 		this.resizeWindow();
-		$(window).on('resize', this.changeWindowHeight)
+		window.onresize = this.changeWindowHeight;
+		// $(window).on('resize', this.changeWindowHeight)
 	},
 	methods: {
 		checkLocalToken: function () {
@@ -127,8 +130,8 @@ new Vue({
 			}, 200);
 		},
 		resizeWindow: function () {
-			var h_win = $(window).height();
-			var h_top = $('.el-header.mmHeader').height();
+			var h_win = window.innerHeight;//$(window).height();
+			var h_top = document.querySelector(".el-header.mmHeader").offsetHeight;//$('.el-header.mmHeader').height();
 			var h_content = h_win - h_top;
 			this.$store.commit({
 				type: 'cheightchange',
@@ -149,41 +152,41 @@ new Vue({
 					//重新获取token
 				}
 			}
-			$.ajax({
-				url: url,
-				type: type,
-				dataType: 'Json',
-				contentType: "application/json",
-				data: obj.data ? obj.data : '',
-				beforeSend: function (request) {
-					if (obj.headerKey && obj.headerValue) {
-						request.setRequestHeader(obj.headerKey, obj.headerValue);
-					}
-				},
-				success: function (result) {
-					console.log(obj.urlName + ' success', result);
-					if (result.stateCode == 100000) {
-						if (typeof obj.cb == 'function') {
-							obj.cb({ state: 'success', data: result });
-						}
-					} else if (result.stateCode == 100002) {
-						if (typeof obj.cb == 'function') {
-							obj.cb({ state: 'empty', data: result });
-						}
-					} else {
-						if (typeof obj.cb == 'function') {
-							obj.cb({ state: 'warning', data: result });
-						}
-					}
+			// $.ajax({
+			// 	url: url,
+			// 	type: type,
+			// 	dataType: 'Json',
+			// 	contentType: "application/json",
+			// 	data: obj.data ? obj.data : '',
+			// 	beforeSend: function (request) {
+			// 		if (obj.headerKey && obj.headerValue) {
+			// 			request.setRequestHeader(obj.headerKey, obj.headerValue);
+			// 		}
+			// 	},
+			// 	success: function (result) {
+			// 		console.log(obj.urlName + ' success', result);
+			// 		if (result.stateCode == 100000) {
+			// 			if (typeof obj.cb == 'function') {
+			// 				obj.cb({ state: 'success', data: result });
+			// 			}
+			// 		} else if (result.stateCode == 100002) {
+			// 			if (typeof obj.cb == 'function') {
+			// 				obj.cb({ state: 'empty', data: result });
+			// 			}
+			// 		} else {
+			// 			if (typeof obj.cb == 'function') {
+			// 				obj.cb({ state: 'warning', data: result });
+			// 			}
+			// 		}
 
-				},
-				error: function (e) {
-					console.log(obj.urlName + ' Error', e);
-					if (typeof obj.cb == 'function') {
-						obj.cb({ state: 'error', data: e });
-					}
-				}
-			});
+			// 	},
+			// 	error: function (e) {
+			// 		console.log(obj.urlName + ' Error', e);
+			// 		if (typeof obj.cb == 'function') {
+			// 			obj.cb({ state: 'error', data: e });
+			// 		}
+			// 	}
+			// });
 		},
 		loadApiToken: function (obj) {
 			var that = this;
