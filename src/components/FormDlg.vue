@@ -120,25 +120,25 @@ export default {
 			return this.$store.state.dlgFormLabelWidth;
 		},
 		permissionCombo: function () {
-			return this.$store.state.permissionCombo;
+			return this.$store.getters.permissionCombo;
 		},
 		permisCombo: function () {
 			var newData = mmUtils.deepClone(this.permissionCombo);
-			if (!newData) {
-				newData = [{
-					value: '0',
-					label: '根节点'
-				}];
-			} else {
-				newData.unshift({
-					value: '0',
-					label: '根节点'
-				});
-			}
+			// if (!newData) {
+			// 	newData = [{
+			// 		value: '0',
+			// 		label: '根节点'
+			// 	}];
+			// } else {
+			// 	newData.unshift({
+			// 		value: '0',
+			// 		label: '根节点'
+			// 	});
+			// }
 			return newData;
 		},
 		menuCombo: function () {
-			return this.$store.state.menuCombo;
+			return this.$store.getters.menuCombo;
 		},
 		roleCombo: function () {
 			return this.$store.state.roleCombo;

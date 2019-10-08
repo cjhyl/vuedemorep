@@ -99,6 +99,8 @@ export default {
   methods:{
       //更新表格数据
 		reloadData:function(){
+            this.tableData=this.$store.state.menuData;
+            this.pageData.total=this.tableData.length;
 			if(!this.userToken){
 				return;
 			}
@@ -125,7 +127,7 @@ export default {
 				// 			that.tableData=[];
 				// 		}
 				// 	}
-				// });
+                // });
 			},100);
 		},
 		//更新全局数据
@@ -181,6 +183,22 @@ export default {
 		//添加面板确定
 		addDlgOk:function(data){
 			var that=this;
+            var tempData=mmUtils.deepClone(this.$store.state.menuData);
+            tempData.push({
+                createdTime:mmUtils.formatTimeSpan(new Date(),'YYYY-MM-DD hh:mm:ss'),
+                id:mmUtils.createRandomId(),
+                icon:data.icon,
+                orderId:data.orderId,
+                title:data.title,
+                parentId:data.parentId,
+                permissionId:data.permissionId,
+                permissionName:data.permissionName,
+            })
+            that.$store.commit({
+                type: 'menudatachange',
+                data: tempData
+            });
+            that.reloadData();
 			// this.$root.loadUrl({
 			// 	urlName:'addMenu',
 			// 	data:JSON.stringify({
@@ -226,7 +244,19 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(function(){
-				that.loading=true;
+                var tempData=mmUtils.deepClone(that.$store.state.menuData);
+                for(var i=0;i<tempData.length;i++){
+                    if(tempData[i].id==data.id){
+                        tempData.splice(i,1);
+                    break;
+                    }
+                }
+                that.$store.commit({
+                    type: 'menudatachange',
+                    data: tempData
+                });
+                that.reloadData();
+				// that.loading=true;
 				// that.$root.loadUrl({
 				// 	urlName:'deleteMenu',
 				// 	urlPr:'/'+data.id,
@@ -243,7 +273,7 @@ export default {
 				// 		}
 				// 	}
 				// });
-			});
+			}).catch(()=>{});
 		},
 		//表格编辑
 		gridEdit:function(idx,data){
@@ -253,7 +283,26 @@ export default {
 		//编辑面板确定
 		editDlgOk:function(data){
 			var that=this;
-			that.loading=true;
+            
+            var that=this;
+            
+            var tempData=mmUtils.deepClone(this.$store.state.menuData);
+            for(var i=0;i<tempData.length;i++){
+                if(tempData[i].id==data.id){
+                    tempData[i].orderId=data.orderId;
+                    tempData[i].parentId=data.parentId;
+                    tempData[i].title=data.title;
+                    tempData[i].icon=data.icon;
+                    tempData[i].permissionId=data.permissionId;
+                    tempData[i].permissionName=data.permissionName;
+                }
+            }
+            that.$store.commit({
+                type: 'menudatachange',
+                data: tempData
+            });
+            that.reloadData();
+            // that.loading=true;
 			// this.$root.loadUrl({
 			// 	urlName:'updateMenu',
 			// 	data:JSON.stringify({

@@ -234,7 +234,10 @@ var utils = {
 			type: 'PUT'
 		},
 			
-	},
+    },
+    createRandomId:function() {
+        return (Math.random()*10000000).toString(16).substr(0,4)+'-'+(new Date()).getTime()+'-'+Math.random().toString().substr(2,5);
+    },
     isPrime:function(num){
 	    if ( num == 1 || num == 4 ){
 	    	return false;

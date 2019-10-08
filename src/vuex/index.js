@@ -18,8 +18,6 @@ export default new Vuex.Store({
 		apiToken: null,
 		userToken: null,
 		menuData: [{
-        index:'1',
-        label:'菜单管理',
         icon:'el-icon-setting',
         orderId:0,
         title:'菜单管理',
@@ -29,8 +27,6 @@ export default new Vuex.Store({
         createdTime:'19820222',
         id:"1",
       },{
-        index:'2',
-        label:'权限管理',
         icon:'el-icon-location',
         orderId:0,
         title:'权限管理',
@@ -40,8 +36,6 @@ export default new Vuex.Store({
         createdTime:'19820221',
         id:"2",
       },{
-        index:'3',
-        label:'测试3',
         icon:'el-icon-setting',
         orderId:0,
         title:'测试3',
@@ -51,8 +45,6 @@ export default new Vuex.Store({
         createdTime:'19820222',
         id:"3",
       },{
-        index:'3-1',
-        label:'测试3-1',
         icon:'el-icon-setting',
         orderId:0,
         title:'测试3-1',
@@ -62,8 +54,6 @@ export default new Vuex.Store({
         createdTime:'19820222',
         id:"3-1",
       },{
-        index:'3-2',
-        label:'测试3-2',
         icon:'el-icon-setting',
         orderId:0,
         title:'测试3-1',
@@ -74,10 +64,22 @@ export default new Vuex.Store({
         id:"3-2",
       },
     ],
-		selMenu: "0",
-		permissionData: null,
-		permissionCombo: null,
-		permissionTree: null,
+    selMenu: "0",
+		permissionData:[{
+      createdTime:'2019-10-08',
+      id:'aa1',
+      parentId:'0',
+      briefDesc:'菜单管理权限',
+      title:'菜单管理',
+      permissionName:'menu permission'
+    },{
+      createdTime:'2019-10-08',
+      id:'rg3',
+      parentId:'0',
+      briefDesc:'角色管理权限',
+      title:'角色管理',
+      permissionName:'role permission'
+    }],
 		roleData: null,
 		roleCombo: null,
 		apiUserStatus: null,
@@ -97,15 +99,48 @@ export default new Vuex.Store({
       return "Other "+state.helloMsg;
     },
     menuCombo(state){
-      var newAry=mmUtils.deepClone(state.menuData);
-      newAry.unshift({
-				value: '0',
-				label: '根节点'
-			});
-      return newAry;
+      var newAry=[{
+        value: '0',
+        label: '根节点'
+      }];
+      var oldAry=state.menuData.map(function(item){
+        item.label=item.title;
+        item.value=item.id;
+        return item;
+      });
+      if(!oldAry||oldAry.length<1){
+        return newAry;
+      }else{
+        return newAry.concat(oldAry);
+      }
     },
     menuTree(state){
       var newAry = state.menuData.map(function (item) {
+				item.index = item.id;
+				item.label = item.title;
+				return item;
+			});
+      var treeAry = mmUtils.menuToTree(newAry, '0');
+      return treeAry;
+    },
+    permissionCombo(state){
+      var newAry=[{
+        value: '0',
+        label: '根节点'
+      }];
+      var oldAry=state.permissionData.map(function(item){
+        item.label=item.title;
+        item.value=item.id;
+        return item;
+      });
+      if(!oldAry||oldAry.length<1){
+        return newAry;
+      }else{
+        return newAry.concat(oldAry);
+      }
+    },
+		permissionTree(state){
+      var newAry = state.permissionData.map(function (item) {
 				item.index = item.id;
 				item.label = item.title;
 				return item;
@@ -124,9 +159,15 @@ export default new Vuex.Store({
     cheightchange(state, data) {
 			state.contentHeight = data.data;
     },
-    selmenuchange: function (state, data) {
+    selmenuchange(state, data) {
 			state.selMenu = data.data;
-		},
+    },
+    menudatachange(state, data) {
+			state.menuData = data.data;
+    },
+    permissiondatachange(state, data) {
+			state.permissionData = data.data;
+    },
   },
   actions:{
 

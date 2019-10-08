@@ -189,6 +189,8 @@ export default {
   methods:{
 		//更新表格数据
 		reloadData:function(){
+            this.tableData=this.$store.state.permissionData;
+            this.pageData.total=this.tableData.length;
 			if(!this.userToken){
 				return;
 			}
@@ -268,7 +270,21 @@ export default {
 		},
 		//添加面板确定
 		addDlgOk:function(data){
-			var that=this;
+            var that=this;
+            var tempData=mmUtils.deepClone(this.$store.state.permissionData);
+            tempData.push({
+                createdTime:mmUtils.formatTimeSpan(new Date(),'YYYY-MM-DD hh:mm:ss'),
+                id:mmUtils.createRandomId(),
+                parentId:data.parentId,
+                briefDesc:data.briefDesc,
+                title:data.title,
+                permissionName:data.permissionName
+            })
+            that.$store.commit({
+                type: 'permissiondatachange',
+                data: tempData
+            });
+            that.reloadData();
 			// this.$root.loadUrl({
 			// 	urlName:'addPermission',
 			// 	data:JSON.stringify({
@@ -308,7 +324,19 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(function(){
-				that.loading=true;
+                var tempData=mmUtils.deepClone(that.$store.state.permissionData);
+                for(var i=0;i<tempData.length;i++){
+                    if(tempData[i].id==data.id){
+                        tempData.splice(i,1);
+                        break;
+                    }
+                }
+                that.$store.commit({
+                    type: 'permissiondatachange',
+                    data: tempData
+                });
+                that.reloadData();
+				// that.loading=true;
 				// that.$root.loadUrl({
 				// 	urlName:'deletePermission',
 				// 	urlPr:'/'+data.id,
@@ -325,7 +353,7 @@ export default {
 				// 		}
 				// 	}
 				// });
-			});
+			}).catch(()=>{});
 		},
 		//表格编辑
 		gridEdit:function(idx,data){
@@ -335,7 +363,22 @@ export default {
 		//编辑面板确定
 		editDlgOk:function(data){
 			var that=this;
-			that.loading=true;
+            
+            var tempData=mmUtils.deepClone(this.$store.state.permissionData);
+            for(var i=0;i<tempData.length;i++){
+                if(tempData[i].id==data.id){
+                    tempData[i].briefDesc=data.briefDesc;
+                    tempData[i].parentId=data.parentId;
+                    tempData[i].title=data.title;
+                    tempData[i].permissionName=data.permissionName;
+                }
+            }
+            that.$store.commit({
+                type: 'permissiondatachange',
+                data: tempData
+            });
+            that.reloadData();
+            //that.loading=true;
 			// this.$root.loadUrl({
 			// 	urlName:'updatePermission',
 			// 	data:JSON.stringify({
