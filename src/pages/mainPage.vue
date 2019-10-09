@@ -3,7 +3,7 @@
 		<el-header class="mmHeader" height="50px" >
 			<div class="lBg">
 				<div class="rc">
-					<img class="logo" src="/static/images/logo.png" />
+					<img class="logo" src="../../static/images/logo.png" />
 				</div>
 				<!--<div class="rc">
 					<el-select v-model="selM1" placeholder="请选择">

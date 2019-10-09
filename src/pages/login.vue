@@ -2,7 +2,7 @@
     <el-container v-loading.fullscreen="loading">
 		<el-header class="mmHeader" height="50px" >
 			<div class="lBg">
-				<img class="logo" src="/static/images/logo.png" />
+				<img class="logo" src="../../static/images/logo.png" />
 			</div>
 			<div class="rBg">
 				<el-select v-model="selLan" @change="lanChange" placeholder="请选择">

@@ -1,0 +1,55 @@
+vue-cli搭建的项目打包之后报“资源路径错误&资源文件找不到“
+复制代码
+此方式vue脚手架是3.0版本，2.0版本见最下面
+//在项目的根目录下（和package.json文件同级）新建一个文件vue.config.js的文件，将此段代码复制进去。
+module.exports = {
+    baseUrl: '/', //在 baseUrl前面加个点baseUrl: './'
+    outputDir: 'dist',
+    lintOnSave: true,
+    runtimeCompiler: true, 
+    chainWebpack: () => {},
+    configureWebpack: () => {},
+    devServer: {
+      open: process.platform === 'darwin',
+      host: 'localhost',
+      port: 8080,
+      https: false,
+      hotOnly: false,
+      proxy: null,
+      before: app => {}
+    }
+  }
+复制代码
+注：如果打包之后还不能解决问题，找到你项目里面router.js文件，将mode：‘ history ’注释掉，如果还需要使用此模式，需要和后端进行配合使用，详情请查看官方文档 https://router.vuejs.org/zh/guide/essentials/history-mode.html
+
+
+
+ 2.0版本
+
+1、在build文件下找到utils.js文件，添加publicPath:'../../',如下
+
+复制代码
+if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader',
+        publicPath:'../../'   //添加此段代码，保留背景图片路径原有的路径地址
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
+复制代码
+2、在config文件中找到index.js文件，修改如下
+
+复制代码
+build: {
+    // Template for index.html
+    index: path.resolve(__dirname, '../dist/index.html'),
+
+    // Paths
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static',
+    assetsPublicPath: './', //将assetsPublicPath：'/'修改为assetsPublicPath: './'
+/** * Source Maps */ productionSourceMap: true, // https://webpack.js.org/configuration/devtool/#production devtool: '#source-map', productionGzip: false, productionGzipExtensions: ['js', 'css'], bundleAnalyzerReport: process.env.npm_config_report }
+复制代码
