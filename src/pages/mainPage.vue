@@ -142,7 +142,12 @@ export default {
     }
   },
   mounted:function(){
-    this.$root.resizeWindow();
+	this.$root.resizeWindow();
+	var that=this;
+	setTimeout(function(){
+		console.log('ddd',that.selMenu);
+		that.handleSelect(that.selMenu);
+	});
   },
   beforeDestroy:function(){
   },

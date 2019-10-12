@@ -64,7 +64,7 @@ export default new Vuex.Store({
         id:"3-2",
       },
     ],
-    selMenu: "0",
+    selMenu: "1",
 		permissionData:[{
       createdTime:'2019-10-08',
       id:'aa1',
