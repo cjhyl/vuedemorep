@@ -143,11 +143,7 @@ export default {
   },
   mounted:function(){
 	this.$root.resizeWindow();
-	var that=this;
-	setTimeout(function(){
-		console.log('ddd',that.selMenu);
-		that.handleSelect(that.selMenu);
-	});
+	this.handleSelect(this.selMenu);
   },
   beforeDestroy:function(){
   },
