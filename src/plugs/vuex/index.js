@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mmUtils from '../utils'
+import mmUtils from '../../utils'
 
 Vue.use(Vuex)
 
@@ -9,9 +9,10 @@ export default new Vuex.Store({
     helloMsg:"Welcome to Your Vue.js App",
     lastPath: '',
 		languages: [
-			{ val: 'en', en: 'English', cn: '英文' },
-			{ val: 'cn', en: 'Chinese', cn: '中文' }
+			{ val: 'en-US', label:"English" },
+			{ val: 'zh-CN', label:"中文" }
 		],
+		lan:"zh-CN",
 		copyright: 'copyright © 2007-2019 chaunve Inc. 保留所有权利。',
 		dlgFormLabelWidth: '120px',
 		contentHeight: 600,
@@ -150,6 +151,12 @@ export default new Vuex.Store({
     },
   },
   mutations:{
+  	languagesChange(state,data){
+  		state.languages=data;
+  	},
+  	lanChange(state,data){
+  		state.lan=data;
+  	},
     helloMsgChange(state,data){
       state.helloMsg=data
     },

@@ -2,8 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-import store from './vuex'
+import router from './plugs/router'
+import store from './plugs/vuex'
+import i18n from './plugs/i18n'
 import axios from 'axios'
 import vueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
@@ -17,7 +18,7 @@ Vue.config.productionTip = false;
 //使用axios
 Vue.use(vueAxios, axios);
 //使用elementUI
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
 //引入mock
 require("./mock");
@@ -25,6 +26,7 @@ require("./mock");
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  i18n,
   router,
   store,
   components: { App },
@@ -34,12 +36,21 @@ new Vue({
 		hubConnection: null,
 	},
 	computed: {
+		lan:function(){
+			return this.$store.state.lan;
+		},
 		apiToken: function () {
 			return this.$store.state.apiToken;
 		},
 		userToken: function () {
 			return this.$store.state.userToken;
 		},
+	},
+	watch:{
+		lan:function(obj){
+			console.log('watchLan',obj.data);
+			this.$i18n.locale=obj.data;
+		}
 	},
 	mounted: function () {
 		this.$router.push({

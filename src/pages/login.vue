@@ -9,7 +9,7 @@
 					<el-option
 						v-for="(item,idx) in languages"
 						:key="idx"
-						:label="selLan=='en'?item.en:item.cn"
+						:label="item.label"
 						:value="item.val"
 						>
 					</el-option>
@@ -22,7 +22,7 @@
 					<el-col :span="16">
 						<div class="loginLeft">
 							<div class="txts">
-								<div class="caption">创造世界  互动未来</div>
+								<div class="caption" v-text="$t('m.chaunveTitle')"></div>
 								<div class="txt">速度 各部门拥有业内最快的执行速度，是我们的第一竞争力</div>
 								<div class="txt">成本 精确的成本控制，使客户在竞争中胜出，使我们在竞争中生存</div>
 								<div class="txt">品质 拥有行内最顶尖的团队，加上业内最苛刻的测试要求与最不惜成本的设备投入</div>
@@ -59,7 +59,7 @@ export default {
 		return {
 			account:'riho@sina.com',//'cjhyl@sohu.com',//"riho@sina.com",
 			pwd:'abc_1234',//'123456',//"abc_1234",
-			selLan:'cn',
+			selLan:'',
 			loading:false,
 		}
 	},
@@ -67,6 +67,9 @@ export default {
 		languages:function(){
 			return this.$store.state.languages;
 		},
+		lan:function(){
+	        return this.$store.state.lan;
+	    },
 		copyrightStr:function(){
 			return this.$store.state.copyright;
 		}
@@ -74,15 +77,24 @@ export default {
 	watch:{
 	},
 	mounted:function(){
+		if(typeof this.lan=='string'){
+			this.selLan=this.lan;
+		}else if(typeof this.lan=='object'){
+			this.selLan=this.lan.data;
+		}
 		
+		console.log('this.selLan',typeof this.selLan,this.selLan,this.$store.state.lan,this.lan);
 	},
 	beforeDestroy:function(){
 		
 	},
 	methods:{
-		
 		lanChange:function(){
 			console.log('lanChange',arguments,this.selLan);
+			this.$store.commit({
+				type: 'lanChange',
+				data: this.selLan
+			});
 		},
 		reset:function(){
 			this.account="";

@@ -4,7 +4,7 @@
 </template>
  
 <script>
-import api from './../axios/api.js'
+import api from '../plugs/axios/api.js'
 export default {
   name: 'Mock',
   data () {

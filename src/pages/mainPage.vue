@@ -29,11 +29,11 @@
 				</div>-->
 			</div>
 			<div class="rBg">
-				<el-select v-model="selLan" placeholder="请选择">
+				<el-select v-model="selLan" @change="lanChange" placeholder="请选择">
 					<el-option
 						v-for="(r,idx) in languages"
 						:key="idx"
-						:label="selLan=='en'?r.en:r.cn"
+						:label="r.label"
 						:value="r.val"
 						>
 					</el-option>
@@ -101,7 +101,7 @@ export default {
 				'A156AF0B9344D7B0':'app_action',
 				'ECC1AE4EEB782190':'app_module',
 			},
-			selLan:'cn',
+			selLan:'zh-CN',
 			roles:[
 				{label:'admin',value:'1'},
 				{label:'guest',value:'2'}
@@ -122,6 +122,9 @@ export default {
   computed:{
     languages:function(){
         return this.$store.state.languages;
+    },
+    lan:function(){
+        return this.$store.state.lan;
     },
     copyrightStr:function(){
         return this.$store.state.copyright;
@@ -144,10 +147,23 @@ export default {
   mounted:function(){
 	this.$root.resizeWindow();
 	this.handleSelect(this.selMenu);
+	if(typeof this.lan=='string'){
+		this.selLan=this.lan;
+	}else if(typeof this.lan=='object'){
+		this.selLan=this.lan.data;
+	}
+	console.log('this.selLan',typeof this.selLan,this.selLan,this.$store.state.lan,this.lan);
   },
   beforeDestroy:function(){
   },
   methods:{
+  	lanChange:function(){
+		console.log('lanChange',arguments,this.selLan);
+		this.$store.commit({
+			type: 'lanChange',
+			data: this.selLan
+		});
+	},
     //   loadMenu:function(){
 	// 		var uToken=this.userToken;
 	// 		var that=this;
